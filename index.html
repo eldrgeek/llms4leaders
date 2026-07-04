@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLMs4Leaders — Your Strategic Compadre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --slate: #1A2332;
+      --white: #F8F7F4;
+      --gold: #C4952A;
+      --teal: #2A7A6F;
+      --light-gray: #E8E6E0;
+      --dark-gray: #4A5568;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--white);
+      color: var(--slate);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Crimson Text', serif;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 56px;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+    }
+
+    h2 {
+      font-size: 42px;
+      line-height: 1.25;
+      letter-spacing: -0.3px;
+      margin-bottom: 24px;
+    }
+
+    h3 {
+      font-size: 22px;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    a {
+      color: var(--gold);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    a:hover {
+      color: var(--teal);
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(26, 35, 50, 0.98);
+      backdrop-filter: blur(8px);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(196, 149, 42, 0.1);
+    }
+
+    .logo {
+      font-family: 'Crimson Text', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.5px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 48px;
+    }
+
+    nav a {
+      font-size: 14px;
+      color: var(--white);
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--gold);
+    }
+
+    /* Sections */
+    section {
+      padding: 100px 40px;
+    }
+
+    .hero {
+      background-color: var(--slate);
+      color: var(--white);
+      padding-top: 180px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .hero h1 {
+      color: var(--white);
+      margin-bottom: 24px;
+      font-size: 72px;
+    }
+
+    .hero .subhead {
+      font-size: 20px;
+      line-height: 1.8;
+      max-width: 700px;
+      margin: 0 auto 48px;
+      color: rgba(248, 247, 244, 0.85);
+    }
+
+    .cta-primary {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--slate);
+      padding: 16px 48px;
+      font-weight: 600;
+      border-radius: 4px;
+      transition: all 0.3s;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Tour card — Show-Don't-Tell (SOMA-APP-STANDARD §7) */
+    .tour-card {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 24px;
+      align-items: center;
+      max-width: 580px;
+      margin: 40px auto 0;
+      padding: 20px;
+      background: rgba(248, 247, 244, 0.06);
+      border: 1px solid rgba(196, 149, 42, 0.4);
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .tour-poster {
+      position: relative;
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 1px solid rgba(248, 247, 244, 0.25);
+      border-radius: 4px;
+      overflow: hidden;
+      background: none;
+      cursor: pointer;
+    }
+
+    .tour-poster img { display: block; width: 100%; height: auto; }
+
+    .tour-play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      color: var(--white);
+      background: rgba(26, 35, 50, 0.35);
+      transition: background 0.2s;
+    }
+
+    .tour-poster:hover .tour-play { background: rgba(42, 122, 111, 0.5); }
+
+    .tour-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .tour-meta h3 { font-size: 18px; font-weight: 600; margin-bottom: 6px; color: var(--white); }
+
+    .tour-meta h3 button {
+      font: inherit;
+      color: inherit;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: rgba(196, 149, 42, 0.6);
+      text-underline-offset: 4px;
+    }
+
+    .tour-meta h3 button:hover { text-decoration-color: var(--gold); }
+
+    .tour-desc { font-size: 15px; color: rgba(248, 247, 244, 0.75); line-height: 1.6; margin: 0; }
+
+    #tour-lightbox {
+      border: none;
+      padding: 0;
+      background: transparent;
+      max-width: min(92vw, 960px);
+      width: 100%;
+      margin: auto; /* explicit — the universal margin:0 reset kills UA dialog centering */
+    }
+
+    #tour-lightbox::backdrop { background: rgba(26, 35, 50, 0.85); }
+    #tour-lightbox video { display: block; width: 100%; height: auto; background: #000; }
+    .tour-frame { position: relative; }
+
+    .tour-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 2;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      background: rgba(26, 35, 50, 0.75);
+      border: 1px solid rgba(248, 247, 244, 0.35);
+      border-radius: 4px;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      .tour-card { grid-template-columns: 1fr; }
+    }
+
+    .cta-primary:hover {
+      background: var(--teal);
+      color: var(--white);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Problem Section */
+    .problem {
+      background-color: var(--white);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .problem h2 {
+      margin-bottom: 48px;
+      max-width: 600px;
+    }
+
+    .dialogue {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 48px;
+    }
+
+    .dialogue-block {
+      padding: 32px;
+      border-radius: 8px;
+      border-left: 4px solid var(--gold);
+    }
+
+    .dialogue-block.leader {
+      background-color: rgba(42, 122, 111, 0.08);
+      border-left-color: var(--teal);
+    }
+
+    .dialogue-block.claude {
+      background-color: rgba(196, 149, 42, 0.05);
+      border-left-color: var(--gold);
+    }
+
+    .dialogue-label {
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      color: var(--dark-gray);
+    }
+
+    .dialogue-block p {
+      font-size: 15px;
+      line-height: 1.7;
+      margin: 0;
+      font-style: italic;
+    }
+
+    /* Use cases grid */
+    .use-cases {
+      background-color: var(--white);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .use-cases h2 {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .tile {
+      padding: 32px;
+      border: 1px solid var(--light-gray);
+      border-radius: 8px;
+      transition: all 0.3s;
+      background: var(--white);
+    }
+
+    .tile:hover {
+      border-color: var(--gold);
+      box-shadow: 0 12px 32px rgba(196, 149, 42, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .tile h3 {
+      color: var(--slate);
+      margin-bottom: 12px;
+    }
+
+    .tile p {
+      font-size: 14px;
+      color: var(--dark-gray);
+      margin: 0;
+    }
+
+    /* Compadre Difference */
+    .compadre {
+      background-color: rgba(26, 35, 50, 0.02);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .compadre h2 {
+      margin-bottom: 48px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .feature {
+      display: flex;
+      gap: 16px;
+    }
+
+    .feature-icon {
+      font-size: 24px;
+      color: var(--teal);
+      min-width: 32px;
+    }
+
+    .feature h4 {
+      font-family: 'Crimson Text', serif;
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: var(--slate);
+    }
+
+    .feature p {
+      font-size: 14px;
+      color: var(--dark-gray);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Organization */
+    .organization {
+      background-color: var(--slate);
+      color: var(--white);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .organization h2 {
+      color: var(--white);
+      margin-bottom: 32px;
+    }
+
+    .org-content {
+      font-size: 18px;
+      line-height: 1.8;
+      max-width: 700px;
+    }
+
+    .org-highlight {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* Pricing */
+    .pricing {
+      background-color: var(--white);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .pricing h2 {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .price-card {
+      padding: 40px 32px;
+      border: 2px solid var(--light-gray);
+      border-radius: 8px;
+      text-align: center;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .price-card:hover {
+      border-color: var(--gold);
+      box-shadow: 0 16px 40px rgba(196, 149, 42, 0.15);
+      transform: translateY(-8px);
+    }
+
+    .price-card.featured {
+      border-color: var(--gold);
+      box-shadow: 0 16px 40px rgba(196, 149, 42, 0.15);
+      transform: translateY(-8px);
+    }
+
+    .price-tier {
+      font-family: 'Crimson Text', serif;
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--slate);
+    }
+
+    .price {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    .price-subtitle {
+      font-size: 13px;
+      color: var(--dark-gray);
+      margin-bottom: 32px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .price-features {
+      text-align: left;
+      margin-bottom: 32px;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .price-features li {
+      list-style: none;
+      margin-bottom: 12px;
+      padding-left: 24px;
+      position: relative;
+      color: var(--dark-gray);
+    }
+
+    .price-features li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    .pricing-note {
+      text-align: center;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--dark-gray);
+      max-width: 900px;
+      margin: 0 auto;
+      padding-top: 32px;
+      border-top: 1px solid var(--light-gray);
+    }
+
+    /* Start Section */
+    .start {
+      background: linear-gradient(135deg, var(--slate) 0%, rgba(26, 35, 50, 0.95) 100%);
+      color: var(--white);
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .start h2 {
+      color: var(--white);
+      font-size: 48px;
+      margin-bottom: 24px;
+    }
+
+    .start p {
+      font-size: 18px;
+      margin-bottom: 48px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      color: rgba(248, 247, 244, 0.9);
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--slate);
+      color: var(--white);
+      text-align: center;
+      padding: 48px 40px;
+      font-size: 14px;
+      border-top: 1px solid rgba(196, 149, 42, 0.1);
+    }
+
+    footer p {
+      margin-bottom: 8px;
+      color: rgba(248, 247, 244, 0.7);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+      }
+
+      nav ul {
+        gap: 24px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      h1 {
+        font-size: 42px;
+      }
+
+      h2 {
+        font-size: 32px;
+      }
+
+      section {
+        padding: 60px 24px;
+      }
+
+      .hero {
+        padding-top: 120px;
+      }
+
+      .dialogue {
+        grid-template-columns: 1fr;
+      }
+
+      .tiles, .pricing-grid, .features {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">LLMs4Leaders · Your Strategic Compadre</div>
+    <ul>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#bring-ai">Bring Your AI</a></li>
+      <li><a href="#team">For Your Team</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#start"><button class="cta-primary">Request Access</button></a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div>
+      <h1>Your Commercial AI Resets.<br>The Compadre Doesn't.</h1>
+      <p class="subhead">ChatGPT, Claude, Gemini — powerful tools with one blind spot: they can't remember who you are across conversations, and they can't coach you on how to use them better. The Compadre sits above all of them. It holds the arc of your thinking, sharpens how you ask, and helps you get more from whatever AI your organization already runs.</p>
+      <button class="cta-primary">Request Early Access</button>
+
+      <!-- Tour card — Show-Don't-Tell (SOMA-APP-STANDARD §7). Opens only on click; never autoplays. -->
+      <div class="tour-card">
+        <button class="tour-poster" id="tour-open" aria-label="Play the site tour video, about eighty seconds">
+          <img src="videos/visitor-tour-poster.jpg" alt="Opening frame of the site tour" loading="lazy">
+          <span class="tour-play" aria-hidden="true">▶</span>
+        </button>
+        <div class="tour-meta">
+          <span class="tour-label">Site tour</span>
+          <h3><button id="tour-open-2">See how the Compadre works — 80 sec</button></h3>
+          <p class="tour-desc">A narrated pass through this page: the coaching model, bring-your-own-AI, and the pricing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <dialog id="tour-lightbox" aria-label="Site tour video">
+    <div class="tour-frame">
+      <button class="tour-close" id="tour-close">Close ✕</button>
+      <video id="tour-video" controls preload="none" poster="videos/visitor-tour-poster.jpg" playsinline>
+        <source src="videos/visitor-tour.mp4" type="video/mp4">
+        <track kind="chapters" src="videos/visitor-tour.vtt" srclang="en" label="Chapters" default>
+      </video>
+    </div>
+  </dialog>
+
+  <!-- The Real Problem -->
+  <section class="problem" id="how">
+    <h2>What the Compadre Actually Does</h2>
+    <p>The Compadre isn't another chat interface. It coaches you on how to use your existing AI better — then debriefs what it gives you back. Here's what that looks like in practice.</p>
+
+    <div class="dialogue">
+      <div class="dialogue-block leader">
+        <div class="dialogue-label">A Real Leader, Thinking Out Loud</div>
+        <p>"We're looking at acquiring a smaller firm. The synergies look real, but I keep getting generic answers from ChatGPT when I probe on culture fit. I don't know if I'm asking the wrong question or if there's something structural I'm missing."</p>
+      </div>
+      <div class="dialogue-block claude">
+        <div class="dialogue-label">Your Compadre, Coaching You Forward</div>
+        <p>"You're asking the wrong question — and that's fixable. Take this to your ChatGPT: 'Assume my org runs on quarterly decision cycles. Map the operational tempo signals I should look for in a target company that would indicate integration friction, not culture conflict — those are different problems.' Bring back what it says. The interesting part will be what it doesn't surface. Come back and we'll debrief that gap."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases -->
+  <section class="use-cases">
+    <h2>Where Leaders Use the Compadre</h2>
+    <div class="tiles">
+      <div class="tile">
+        <h3>Sharpen Your Board Deck</h3>
+        <p>Draft the argument with your AI. Then bring it here — the Compadre helps you find the logic gap before the room does and tells you what question you haven't asked yet.</p>
+      </div>
+      <div class="tile">
+        <h3>Think Through Org Decisions</h3>
+        <p>Work through second-order effects across sessions. The Compadre remembers what you decided last month and why — your AI doesn't.</p>
+      </div>
+      <div class="tile">
+        <h3>Understand AI Your Team Is Running</h3>
+        <p>Your team deployed something. Get a plain-language brief on what it does, where it can fail, and the questions you should be asking the people who built it.</p>
+      </div>
+      <div class="tile">
+        <h3>Competitive Landscape Briefings</h3>
+        <p>Prompt your AI for the landscape. Then debrief here: what's signal versus noise, what's your actual position, and what the AI probably got wrong about your specific context.</p>
+      </div>
+      <div class="tile">
+        <h3>Prepare for Difficult Conversations</h3>
+        <p>Think through the hard conversation before you're in it. The Compadre knows enough about your org and your style to make the roleplay actually useful.</p>
+      </div>
+      <div class="tile">
+        <h3>Write With Your Voice, Not ChatGPT's</h3>
+        <p>Get a draft, then get coaching on how to push your AI for something that actually sounds like you — not a template wearing your name.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Compadre Difference -->
+  <section class="compadre">
+    <h2>The Compadre Difference</h2>
+    <p>Other tools make you feel like you're Googling. This feels like talking to a very well-read colleague who doesn't have an agenda, won't repeat what you said, and is honest about what it doesn't know.</p>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <div>
+          <h4>Honest About What We Hold</h4>
+          <p>The Compadre builds a relationship profile — who you are, what you're working on, the arc of your thinking. That lives in a dedicated per-user store, not in any training pipeline. Your actual working content — strategy docs, board materials — stays in your commercial AI. We don't store it. When we call the underlying model, it's with zero data retention settings. Export or delete your profile at any time. (SOC 2 in progress — we'll say so plainly rather than pretend it's done.)</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🧠</div>
+        <div>
+          <h4>Remembers the Arc</h4>
+          <p>The system builds a picture of your world over time — your org's situation, the decisions you've been turning over, what you've already tried. Each conversation picks up where the last one left. That's the thing your commercial AI fundamentally cannot do.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎯</div>
+        <div>
+          <h4>Matches Your Register</h4>
+          <p>If you're precise and clinical, the Compadre will be too. If you curse in meetings, it won't fake polite. The AI meets you — not the other way around. That's a real differentiator from commercial platforms built around a single polished voice that sounds like no one in particular.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bring Your AI -->
+  <section class="compadre" id="bring-ai">
+    <h2>Bring Your AI. We'll Help You Get More From It.</h2>
+    <p>The Compadre doesn't compete with ChatGPT Enterprise, Claude, or Gemini Workspace. You keep using whatever your organization has deployed. The Compadre's job is to make you <em>better</em> at using it — sharper prompts, more skeptical consumption of output, and a continuity of strategic context those platforms can't hold across sessions.</p>
+
+    <div class="features" style="margin-top: 40px;">
+      <div class="feature">
+        <div class="feature-icon">📤</div>
+        <div>
+          <h4>Upload Your ChatGPT History</h4>
+          <p>If you've been a heavy ChatGPT user, export your conversation history and bring it here. The Compadre will synthesize how you've been thinking — what priorities keep surfacing, where your reasoning has evolved, what you keep circling back to. It's a mirror that ChatGPT itself can't build, because it can't see across its own sessions.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔄</div>
+        <div>
+          <h4>Extract What Your AI Knows About You</h4>
+          <p>Ask your ChatGPT to produce a memo on what it's inferred about your strategic priorities. Paste it back here. The Compadre helps you evaluate what's accurate, what's missing, and what that tells you about how you've been using it. Useful exercise even if you don't go further.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⚖️</div>
+        <div>
+          <h4>Work vs. Personal AI Hygiene</h4>
+          <p>Some questions are too politically sensitive for a tool your IT team can audit. Some are personal. The Compadre helps you figure out what belongs in enterprise AI, what belongs elsewhere, and why getting that boundary right matters — before it becomes a problem.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- For Your Organization -->
+  <section class="organization" id="team">
+    <h2>Bring This to Your Leadership Team</h2>
+    <div class="org-content">
+      <p>Want to get your whole leadership layer genuinely fluent with AI? We run <span class="org-highlight">cohort onboarding programs</span> — a structured 6-week experience that meets your team where they are.</p>
+      <p style="margin-top: 24px;">Your leaders go from uncomfortable to actually useful: they use AI themselves, not as a buzzword but as a tool for clearer thinking. They learn what to ask, what to push back on, and how to stay in the driver's seat. <span class="org-highlight">$2,000–$5,000 per cohort</span> depending on size.</p>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing" id="pricing">
+    <h2>Simple Pricing. Transparent Compute.</h2>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">Explorer</div>
+        <div class="price">$0</div>
+        <div class="price-subtitle">No credit card required</div>
+        <ul class="price-features">
+          <li>Build your relationship profile</li>
+          <li>Coaching on your current AI prompts</li>
+          <li>One ChatGPT history synthesis</li>
+          <li>Transparent compute costs — no hidden markup</li>
+        </ul>
+        <button class="cta-primary">Build Your Profile</button>
+      </div>
+
+      <div class="price-card featured">
+        <div class="price-tier">Partner</div>
+        <div class="price">$1</div>
+        <div class="price-subtitle">First month — early access</div>
+        <ul class="price-features">
+          <li>Everything in Explorer</li>
+          <li>Ongoing relationship depth across all your work</li>
+          <li>Coaching cadence tailored to your pace</li>
+          <li>Priority model access for longer synthesis</li>
+          <li>Cancel anytime after month 1</li>
+        </ul>
+        <button class="cta-primary">Try for $1</button>
+      </div>
+
+      <div class="price-card">
+        <div class="price-tier">Principal</div>
+        <div class="price">$49</div>
+        <div class="price-subtitle">Per month</div>
+        <ul class="price-features">
+          <li>Full relationship continuity — nothing resets</li>
+          <li>Deep synthesis across your AI platforms</li>
+          <li>Team accounts (up to 3 additional leaders)</li>
+          <li>Access to peer executive cohort programs</li>
+          <li>Export your complete profile anytime</li>
+        </ul>
+        <button class="cta-primary">Go Deep</button>
+      </div>
+    </div>
+
+    <div class="pricing-note">
+      <p><strong>Transparent compute pricing:</strong> You see exactly what your processing costs. No mystery. No markup beyond our posted margin. If a synthesis costs 8¢ in compute, you see that. Builds trust. Keeps us honest.</p>
+    </div>
+  </section>
+
+  <!-- Start -->
+  <section class="start" id="start">
+    <h2>Start With Where You Are</h2>
+    <p>Tell us what commercial AI you're using, what you've been working through, and what's been frustrating about it. We calibrate from there — no setup, no tutorial, no sales pitch.</p>
+    <button class="cta-primary">Request Early Access</button>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p><strong>Built by Mike Wolf + Claude.</strong> Denver, CO.</p>
+    <p>We use Claude ourselves — for everything.</p>
+  </footer>
+<script>
+// Tour lightbox — opens only on explicit click; never autoplays on page load.
+(function () {
+  var box = document.getElementById('tour-lightbox');
+  var vid = document.getElementById('tour-video');
+  var open = function () { box.showModal(); vid.play().catch(function () {}); };
+  document.getElementById('tour-open').addEventListener('click', open);
+  document.getElementById('tour-open-2').addEventListener('click', open);
+  document.getElementById('tour-close').addEventListener('click', function () { box.close(); });
+  box.addEventListener('click', function (e) { if (e.target === box) box.close(); });
+  box.addEventListener('close', function () { vid.pause(); });
+})();
+</script>
+</body>
+</html>
